@@ -1,1 +1,42 @@
-
+name: Build APK
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip openjdk-17-jdk
+      
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip wheel setuptools
+          pip install buildozer==1.5.0 kivy==2.3.0 cryptography cython
+      
+      - name: Set up Android SDK
+        run: |
+          echo "ANDROID_HOME=/opt/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=/opt/android-sdk" >> $GITHUB_ENV
+      
+      - name: Build APK
+        run: |
+          cd UnBlock-v1.0.1/Android
+          buildozer android debug
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: UnBlock-debug.apk
+          path: UnBlock-v1.0.1/Android/bin/*.apk
