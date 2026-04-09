@@ -1,0 +1,30 @@
+name: Build APK
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install buildozer==1.5.0 kivy==2.3.0 cryptography
+      
+      - name: Build APK
+        run: |
+          cd UnBlock-v1.0.1/Android
+          buildozer android debug
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: UnBlock-debug.apk
+          path: UnBlock-v1.0.1/Android/bin/*.apk
