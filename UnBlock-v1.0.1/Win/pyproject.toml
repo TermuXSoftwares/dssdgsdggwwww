@@ -1,0 +1,124 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "unblock"
+dynamic=["version"]
+
+description = "UnBlock - Modern WebSocket Proxy for Telegram"
+readme = "README.md"
+requires-python = ">=3.8"
+
+license = { name = "MIT", file = "LICENSE" }
+
+authors = [
+    { name = "MORALFUCK & Flowseal" }
+]
+
+keywords = [
+    "telegram",
+    "proxy",
+    "websocket",
+    "unblock"
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Environment :: MacOS X :: Cocoa",
+  "Environment :: Win32 (MS Windows)",
+  "Environment :: X11 Applications :: GTK",
+  "Intended Audience :: Customer Service",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS :: MacOS X",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Topic :: System :: Networking :: Firewalls",
+]
+
+dependencies = [
+    "cryptography==41.0.7; platform_system == 'Windows' and python_version < '3.9'",
+    "cryptography==46.0.5; platform_system != 'Windows' or python_version >= '3.9'",
+]
+
+[project.optional-dependencies]
+win7 = [
+    "customtkinter==5.2.2",
+    "Pillow==10.4.0",
+    "psutil==5.9.8",
+    "pystray==0.19.5",
+    "pyperclip==1.9.0",
+]
+
+win10 = [
+    "customtkinter==5.2.2",
+    "Pillow==12.1.1",
+    "psutil==7.0.0",
+    "pystray==0.19.5",
+    "pyperclip==1.9.0",
+]
+
+win10-gui = [
+    "PyQt6==6.6.1",
+    "PyQt6-Qt6==6.6.1",
+    "PyQt6-sip==13.6.0",
+    "Pillow==12.1.1",
+    "psutil==7.0.0",
+    "pyperclip==1.9.0",
+]
+
+macos = [
+    "Pillow==12.1.0",
+    "psutil==7.0.0",
+    "pyperclip==1.9.0",
+    "rumps==0.4.0",
+]
+
+macos-gui = [
+    "PyQt6==6.6.1",
+    "PyQt6-Qt6==6.6.1",
+    "PyQt6-sip==13.6.0",
+    "Pillow==12.1.0",
+    "psutil==7.0.0",
+    "pyperclip==1.9.0",
+]
+
+linux = [
+    "customtkinter==5.2.2",
+    "Pillow==12.1.1",
+    "psutil==7.0.0",
+    "pystray==0.19.5",
+    "pyperclip==1.9.0",
+]
+
+linux-gui = [
+    "PyQt6==6.6.1",
+    "PyQt6-Qt6==6.6.1",
+    "PyQt6-sip==13.6.0",
+    "Pillow==12.1.1",
+    "psutil==7.0.0",
+    "pyperclip==1.9.0",
+]
+
+[project.scripts]
+unblock = "proxy.tg_ws_proxy:main"
+unblock-tray-win = "windows:main"
+unblock-tray-macos = "macos:main"
+unblock-tray-linux = "linux:main"
+unblock-gui = "gui:main"
+
+[project.urls]
+Source = "https://github.com/Flowseal/tg-ws-proxy"
+Issues = "https://github.com/Flowseal/tg-ws-proxy/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["proxy"]
+
+[tool.hatch.build.force-include]
+"windows.py" = "windows.py"
+"macos.py" = "macos.py"
+"linux.py" = "linux.py"
+
+[tool.hatch.version]
+path = "proxy/__init__.py"
